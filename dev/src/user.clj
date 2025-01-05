@@ -17,6 +17,7 @@
 
 (comment
   (app {:request-method :get :uri "/v1/recipes"})
+  (app {:request-method :get :uri "/swagger.json"})
   (go)
   (halt)
   (reset))
