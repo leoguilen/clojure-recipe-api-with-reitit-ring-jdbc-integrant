@@ -1,36 +1,50 @@
-(ns cheffy.router 
-  (:require
-   [cheffy.recipe.routes :as recipe]
-   [muuntaja.core :as m]
-   [reitit.ring :as ring]
-   [reitit.ring.middleware.muuntaja :as muuntaja]
-   [reitit.swagger :as swagger]
-   [reitit.swagger-ui :as swagger-ui]))
-
-(def router-config
-  {:data {:muuntaja m/instance
-          :middleware [swagger/swagger-feature
-                       muuntaja/format-middleware]}})
+(ns cheffy.router
+  (:require [reitit.ring :as ring]
+            [cheffy.recipe.routes :as recipe]
+            [cheffy.account.routes :as account]
+            [cheffy.conversation.routes :as conversation]
+            [reitit.swagger :as swagger]
+            [reitit.swagger-ui :as swagger-ui]
+            [muuntaja.core :as m]
+            [reitit.ring.middleware.muuntaja :as muuntaja]
+            [reitit.coercion.spec :as coercion-spec]
+            [reitit.ring.coercion :as coercion]
+            [reitit.ring.middleware.exception :as exception]
+            [reitit.dev.pretty :as pretty]
+            [reitit.ring.spec :as rs]
+            [reitit.ring.middleware.dev :as dev]))
 
 (def swagger-docs
   ["/swagger.json"
-   {:get {:no-doc true
-          :swagger {:basePath "/"
-                    :schemes ["http"]
-                    :info {:title "Cheffy API Reference"
-                           :description "The Cheffy API is organized arount REST. Returns JSON, Transit (msgpack, json), or EDN encoded responses."
-                           :version "1.0.0"}
-                    :paths {"/v1/recipes" {:get {:summary "Get all recipes"
-                                                 :tags ["Recipes"]
-                                                 :responses {200 {:description "OK"}}}}}}
-          :handler (swagger/create-swagger-handler)}}])
+   {:get
+    {:no-doc  true
+     :swagger {:basePath "/"
+               :info     {:title       "Cheffy API Reference"
+                          :description "The Cheffy API is organized around REST. Returns JSON, Transit (msgpack, json), or EDN  encoded responses."
+                          :version     "1.0.0"}}
+     :handler (swagger/create-swagger-handler)}}])
+
+(def router-config
+  {:validate  rs/validate
+   ;;:reitit.middleware/transform dev/print-request-diffs
+   :exception pretty/exception
+   :data      {:coercion   coercion-spec/coercion
+               :muuntaja   m/instance
+               :middleware [swagger/swagger-feature
+                            muuntaja/format-middleware
+                            ;;exception/exception-middleware
+                            coercion/coerce-request-middleware
+                            coercion/coerce-response-middleware]}})
 
 (defn routes
   [env]
   (ring/ring-handler
    (ring/router
     [swagger-docs
-     ["/v1" (recipe/routes env)]]
+     ["/v1"
+      (recipe/routes env)
+      (account/routes env)
+      (conversation/routes env)]]
     router-config)
    (ring/routes
     (swagger-ui/create-swagger-ui-handler {:path "/"}))))

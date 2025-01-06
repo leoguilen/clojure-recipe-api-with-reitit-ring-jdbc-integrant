@@ -15,3 +15,4 @@ pom.xml.asc
 .clj-kondo/
 .calva/
 .env
+dev/resources/config.edn

@@ -1,44 +1,59 @@
-# cheffy
+# Cheffy API - Recipe Management and Cooking Collaboration
 
-FIXME: description
+Cheffy is a Clojure-based application designed to help users manage recipes, ingredients, and cooking steps. (This project was developed following the [Reitit Pro Course](https://www.jacekschae.com/view/courses/learn-reitit-pro) on the Clojure Stream platform)
+
+---
+
+## Tech Stack
+
+Cheffy leverages several modern technologies to provide a smooth and scalable experience:
+
+- **Clojure**: A functional programming language that powers the backend logic of Cheffy, providing a robust and expressive environment for developing the application.
+  
+- **Docker**: Used to containerize the application for easy deployment, scalability, and isolation across various environments.
+
+- **Ring**: A Clojure web library used to handle HTTP requests and responses. It provides a flexible interface for building web applications and APIs.
+
+- **Reitit**: A Clojure routing library that integrates well with Ring, enabling flexible and efficient routing for our web application.
+
+- **Integrant**: A simple configuration management library for Clojure, used to handle component management and initialization for the application, ensuring a clean and manageable architecture.
+
+- **JDBC**: The Java Database Connectivity (JDBC) API is used to connect Cheffy with a PostgreSQL database, providing robust support for relational data storage and querying.
+
+- **PostgreSQL**: A powerful, open-source relational database used to store recipes, ingredients, steps, and chat messages, ensuring data consistency and reliability.
+
+- **Auth0**: A secure authentication service that handles user login, registration, and identity management, ensuring a safe and reliable user experience for the Cheffy community.
+
+---
 
 ## Installation
 
-Download from http://example.com/FIXME.
+### Requirements
 
-## Usage
+- Java 
+- Leiningen (for project management)
 
-FIXME: explanation
+### Getting Started
 
-    $ java -jar cheffy-0.1.0-standalone.jar [args]
+1. Clone the repository:
 
-## Options
+   ```bash
+   git clone https://github.com/leoguilen/clojure-recipe-api-with-reitit-ring-jdbc-integrant.git cheffy
 
-FIXME: listing of options this app accepts.
+2. Navigate into the project directory:
 
-## Examples
+    ```bash
+    cd cheffy
+    ```
 
-...
+3. Install project dependencies using Leiningen:
 
-### Bugs
+    ```bash
+    lein deps
+    ```
 
-...
+3. Run the application:
 
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2025 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+    ```bash
+    lein run
+    ```
